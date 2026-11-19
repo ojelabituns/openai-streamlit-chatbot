@@ -66,7 +66,7 @@ st.sidebar.caption(
 
 st.sidebar.markdown("---")
 
-st.sidebar.markdown("Created by [Tunde Ojelabi](#) | [GitHub](#)")
+st.sidebar.markdown("Created by [Tunde Ojelabi](#) | [GitHub](https://github.com/ojelabituns/openai-streamlit-chatbot)")
 
 # --------------------------------------------------
 # 4. MAIN CHATBOT INTERFACE
