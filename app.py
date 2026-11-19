@@ -64,6 +64,10 @@ st.sidebar.caption(
     "Your conversation is stored in the current Streamlit session."
 )
 
+st.sidebar.markdown("---")
+
+st.sidebar.markdown("Created by [Tunde Ojelabi](#) | [GitHub](#)")
+
 # --------------------------------------------------
 # 4. MAIN CHATBOT INTERFACE
 # --------------------------------------------------
