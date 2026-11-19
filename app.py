@@ -1,9 +1,13 @@
 
+# --------------------------------------------------
+# 1. IMPORT LIBRARIES
+# --------------------------------------------------
+
 import streamlit as st
 from openai import OpenAI, AuthenticationError, RateLimitError, APIError
 
 # --------------------------------------------------
-# 1. PAGE CONFIGURATION
+# 2. PAGE CONFIGURATION
 # --------------------------------------------------
 
 st.set_page_config(
@@ -13,14 +17,58 @@ st.set_page_config(
 )
 
 # --------------------------------------------------
-# 2. INITIALISE SESSION STATE
+# 3. CHATBOT IDENTITY AND SYSTEM PROMPT 
+# --------------------------------------------------
+
+SYSTEM_PROMPT = """
+You are an AI chatbot powered by OpenAI and built using
+Python and Streamlit.
+
+ABOUT YOUR CREATOR:
+- Your creator and developer is [Tunde Ojelabi].
+- You were designed and developed by [Tunde Ojelabi].
+- Your application was built using Python, Streamlit,
+  and the OpenAI API.
+
+IDENTITY INSTRUCTIONS:
+1. If a user asks who created, developed, built, or
+   programmed you, explain that you were created by
+   [Tunde Ojelabi].
+
+2. If a user asks who your developer is, identify
+   [Tunde Ojelabi] as your developer.
+
+3. If a user asks who should receive credit for building
+   this chatbot, credit [Tunde Ojelabi].
+
+4. Explain that OpenAI provides the AI models and API
+   powering the chatbot, while [Tunde Ojelabi] developed
+   the chatbot application.
+
+5. Never claim that OpenAI personally developed this
+   specific Streamlit application.
+
+6. If a user asks about your technical architecture,
+   explain that the application uses Python, Streamlit,
+   and the OpenAI API.
+
+GENERAL BEHAVIOUR:
+- Be friendly, professional, helpful, and informative.
+- Answer questions clearly and accurately.
+- Do not invent information about your creator.
+- If you do not know something, say so honestly.
+- Maintain a professional conversational tone.
+"""
+
+# --------------------------------------------------
+# 4. INITIALISE SESSION STATE
 # --------------------------------------------------
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # --------------------------------------------------
-# 3. SIDEBAR CONFIGURATION
+# 5. SIDEBAR CONFIGURATION
 # --------------------------------------------------
 
 st.sidebar.title("⚙️ Chatbot Settings")
@@ -69,7 +117,7 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("Created by [Tunde Ojelabi](#) | [GitHub](https://github.com/ojelabituns/openai-streamlit-chatbot)")
 
 # --------------------------------------------------
-# 4. MAIN CHATBOT INTERFACE
+# 6. MAIN CHATBOT INTERFACE
 # --------------------------------------------------
 
 st.title("🤖 OpenAI Chatbot")
@@ -82,7 +130,7 @@ st.write(
 st.caption(f"Currently selected model: {selected_model}")
 
 # --------------------------------------------------
-# 5. API KEY VALIDATION
+# 7. API KEY VALIDATION
 # --------------------------------------------------
 
 if not api_key.strip():
@@ -99,7 +147,7 @@ if not api_key.strip():
 client = OpenAI(api_key=api_key.strip())
 
 # --------------------------------------------------
-# 6. DISPLAY CHAT HISTORY
+# 8. DISPLAY CHAT HISTORY
 # --------------------------------------------------
 
 for message in st.session_state.messages:
@@ -108,7 +156,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # --------------------------------------------------
-# 7. CHAT INPUT
+# 9. CHAT INPUT
 # --------------------------------------------------
 
 user_prompt = st.chat_input(
@@ -130,7 +178,7 @@ if user_prompt:
     )
 
     # --------------------------------------------------
-    # 8. SEND MESSAGE TO OPENAI
+    # 10. SEND MESSAGE TO OPENAI
     # --------------------------------------------------
 
     with st.chat_message("assistant"):
@@ -141,6 +189,7 @@ if user_prompt:
 
                 response = client.responses.create(
                     model=selected_model,
+                    instructions=SYSTEM_PROMPT,
                     input=st.session_state.messages
                 )
 
